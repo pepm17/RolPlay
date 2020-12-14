@@ -16,6 +16,6 @@ class UserController extends Controller
     public function show($id)
     {
         $user = $this->findUserUseCase->execute($id);
-        return $user->toArray();
+        return response()->json($user->toArray());
     }
 }
