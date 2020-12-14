@@ -25,7 +25,7 @@ final class UserModel
     private $password;
 
     public function __construct(
-        UserId $id,
+        UserId $id = null,
         UserName $userName,
         Email $email,
         Password $password
@@ -39,7 +39,7 @@ final class UserModel
     public static function fromArray(array $data): self
     {
         return new self(
-            new UserId($data['id']),
+            $id = ($data['id'] !== null) ? new UserId($data['id']) : null,
             new UserName($data['username']),
             new Email($data['email']),
             new Password($data['password'])
@@ -49,10 +49,16 @@ final class UserModel
     public function toArray(): array
     {
         return [
-            'id' => $this->id->getId(),
-            'userName' => $this->userName->getUserName(),
+            'id' => ($this->id !== null) ? $this->id->getId() : '',
+            'username' => $this->userName->getUserName(),
             'email' => $this->email->getEmail(),
             'password' => $this->password->getPassword(),
         ];
+    }
+
+    public function passwordEqual(string $confirmPassword): bool
+    {
+        if ($this->password->passwordEqual($confirmPassword)) return true;
+        return false;
     }
 }

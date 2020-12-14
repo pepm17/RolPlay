@@ -7,7 +7,6 @@ use Src\User\Domain\contracts\IUserRepository;
 use Src\User\Domain\UserModel;
 use Src\User\Domain\DTOs\LoginDTO;
 use Src\User\Domain\DTOs\RegisterDTO;
-use Src\User\Domain\Password;
 use Src\User\Domain\PasswordNotEqual;
 
 final class AuthUseCase implements IAuthUseCase
@@ -21,12 +20,12 @@ final class AuthUseCase implements IAuthUseCase
 
     public function register(RegisterDTO $registerDto): UserModel
     {
-        $passwordConfirm = new Password($registerDto->getPassword());
-        if (!$passwordConfirm->passwordEqual($registerDto->getConfirmPassword())) {
+        $userModel = UserModel::fromArray($registerDto->toArray());
+
+        if (!$userModel->passwordEqual($registerDto->getConfirmPassword()))
             throw new PasswordNotEqual("The passwords not equals");
-        }
-        $registerDto->setPassword($passwordConfirm->getPassword());
-        $user = $this->userRepository->register($registerDto);
+
+        $user = $this->userRepository->register($userModel);
         return UserModel::fromArray($user);
     }
 
