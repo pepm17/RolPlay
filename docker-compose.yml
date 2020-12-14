@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-  base_laravel:
+  rolplay:
     build:
       context: .
       dockerfile: Dockerfile
@@ -9,16 +9,16 @@ services:
     ports:
       - 8000:8000
     depends_on:
-      - base_laravel_db
+      - rolplay_db
 
-  base_laravel_db:
+  rolplay_db:
     image: mysql:5.7.22
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: base_laravel
+      MYSQL_DATABASE: rolplay
       MYSQL_USER: root
       MYSQL_PASSWORD: root
     volumes:
-      - ./storage/dbdata:/var/lib/mysql
+      - ./storage/DB:/var/lib/mysql
     ports:
       - 33060:3306
