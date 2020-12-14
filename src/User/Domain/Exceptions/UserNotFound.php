@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\User\Domain;
+namespace Src\User\Domain\Exceptions;
 
 final class UserNotFound extends \DomainException
 {

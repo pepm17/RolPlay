@@ -3,6 +3,7 @@
 namespace Src\User\Domain;
 
 use Src\Shared\HashValue;
+use Src\User\Domain\Exceptions\PasswordNotEqual;
 
 final class Password
 {
@@ -21,13 +22,12 @@ final class Password
         return $this->password;
     }
 
-    public function passwordEqual(string $confirmPassword): bool
+    public function passwordEqual(string $confirmPassword): void
     {
-        if ($this->password === $confirmPassword) {
-            $this->hashPassword();
-            return true;
-        }
-        return false;
+        if ($this->password !== $confirmPassword)
+            throw new PasswordNotEqual("The passwords not equals");
+
+        $this->hashPassword();
     }
 
     private function hashPassword(): void
