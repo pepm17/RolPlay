@@ -7,6 +7,11 @@ final class RegisterDTO
     /** 
      * @var string
      */
+    private $id;
+
+    /** 
+     * @var string
+     */
     private $userName;
 
     /** 
@@ -30,11 +35,13 @@ final class RegisterDTO
         $this->email = $email;
         $this->password = $password;
         $this->confirmPassword = $confirmPassword;
+        $this->id = null;
     }
 
     public function toArray(): array
     {
         return [
+            'id' => $this->id,
             'username' => $this->userName,
             'email' => $this->email,
             'password' => $this->password,
