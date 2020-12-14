@@ -20,7 +20,7 @@ final class EloquentUserRepository implements IUserRepository
     public function register(UserModel $userModel): ?array
     {
         $existUser = $this->findEmail($userModel->getEmail()->getEmail());
-        if (!$existUser) return null;
+        if ($existUser) return null;
         $model = UserEloquentModel::create($userModel->toArray())->toArray();
         return $model;
     }
