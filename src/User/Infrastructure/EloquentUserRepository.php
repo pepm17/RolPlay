@@ -19,9 +19,9 @@ final class EloquentUserRepository implements IUserRepository
         return $model;
     }
 
-    public function register(RegisterDTO $registerDto): array
+    public function register(UserModel $userModel): array
     {
-        $model = UserEloquentModel::create($registerDto->toArray())->toArray();
+        $model = UserEloquentModel::create($userModel->toArray())->toArray();
         return $model;
     }
 
