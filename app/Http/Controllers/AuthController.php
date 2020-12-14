@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Src\User\Domain\contracts\IAuthUseCase;
 use Illuminate\Http\Request;
-use Src\User\Domain\DTOs\RegisterDTO;
+use Src\User\Domain\DTOs\UserDto;
 
 class AuthController extends Controller
 {
@@ -16,7 +16,7 @@ class AuthController extends Controller
     }
     public function register(Request $req)
     {
-        $userDto = new RegisterDTO(
+        $userDto = new UserDto(
             $req['username'],
             $req['email'],
             $req['password'],
@@ -26,7 +26,7 @@ class AuthController extends Controller
     }
     public function login(Request $req)
     {
-        $userDto = new RegisterDTO(
+        $userDto = new UserDto(
             $req['username'] ? $req['username'] : null,
             $req['email'],
             $req['password'],

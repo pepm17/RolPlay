@@ -2,7 +2,7 @@
 
 namespace Src\User\Domain\DTOs;
 
-final class RegisterDTO
+final class UserDto
 {
     /** 
      * @var string

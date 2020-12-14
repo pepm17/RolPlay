@@ -2,12 +2,11 @@
 
 namespace Src\User\Domain\contracts;
 
-use Src\User\Domain\DTOs\LoginDTO;
-use Src\User\Domain\DTOs\RegisterDTO;
+use Src\User\Domain\DTOs\UserDto;
 use Src\User\Domain\UserModel;
 
 interface IAuthUseCase
 {
-    public function register(RegisterDTO $registerDto): UserModel;
-    public function login(RegisterDTO $registerDto): string;
+    public function register(UserDto $UserDto): UserModel;
+    public function login(UserDto $UserDto): string;
 }

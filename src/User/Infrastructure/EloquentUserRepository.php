@@ -5,8 +5,6 @@ namespace Src\User\Infrastructure;
 use Src\User\Domain\UserId;
 use Src\User\Domain\UserModel;
 use Src\User\Domain\contracts\IUserRepository;
-use Src\User\Domain\DTOs\LoginDTO;
-use Src\User\Domain\DTOs\RegisterDTO;
 use Src\User\Infrastructure\Eloquent\UserEloquentModel;
 
 final class EloquentUserRepository implements IUserRepository
@@ -19,8 +17,10 @@ final class EloquentUserRepository implements IUserRepository
         return $model;
     }
 
-    public function register(UserModel $userModel): array
+    public function register(UserModel $userModel): ?array
     {
+        $existUser = $this->findEmail($userModel->getEmail()->getEmail());
+        if ($existUser !== null) return null;
         $model = UserEloquentModel::create($userModel->toArray())->toArray();
         return $model;
     }
