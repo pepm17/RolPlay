@@ -2,12 +2,13 @@
 
 namespace Src\User\Infrastructure\Eloquent;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-final class UserEloquentModel extends Model
+final class UserEloquentModel extends Authenticatable
 {
-    use HasApiTokens;
+    use HasApiTokens, Notifiable;
 
     protected $table = 'users';
     protected $primaryKey = 'id';
@@ -16,4 +17,9 @@ final class UserEloquentModel extends Model
         'email',
         'password',
     ];
+
+    public function addToken(): string
+    {
+        return $this->createToken('Users')->accessToken;
+    }
 }

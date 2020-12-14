@@ -25,8 +25,18 @@ final class EloquentUserRepository implements IUserRepository
         return $model;
     }
 
-    public function login(LoginDTO $loginDTO): string
+    public function login(UserModel $userModel): ?string
     {
-        return "";
+        $model = $this->findEmail($userModel->getEmail()->getEmail());
+        if (!$model) return null;
+        $token = $model->addToken();
+        return $token;
+    }
+
+    private function findEmail(string $email): ?UserEloquentModel
+    {
+        $model = UserEloquentModel::where('email', $email)->first();
+        if (!$model) return null;
+        return $model;
     }
 }

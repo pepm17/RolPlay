@@ -8,6 +8,7 @@ use Src\User\Domain\UserModel;
 use Src\User\Domain\DTOs\LoginDTO;
 use Src\User\Domain\DTOs\RegisterDTO;
 use Src\User\Domain\PasswordNotEqual;
+use Src\User\Domain\UserNotFound;
 
 final class AuthUseCase implements IAuthUseCase
 {
@@ -29,8 +30,11 @@ final class AuthUseCase implements IAuthUseCase
         return UserModel::fromArray($user);
     }
 
-    public function login(LoginDTO $loginDTO): string
+    public function login(RegisterDTO $registerDto): string
     {
-        return "";
+        $userModel = UserModel::fromArray($registerDto->toArray());
+        $token = $this->userRepository->login($userModel);
+        if (!$token) throw new UserNotFound("User not found");
+        return $token;
     }
 }

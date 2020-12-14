@@ -9,5 +9,5 @@ use Src\User\Domain\UserModel;
 interface IAuthUseCase
 {
     public function register(RegisterDTO $registerDto): UserModel;
-    public function login(LoginDTO $loginDTO): string;
+    public function login(RegisterDTO $registerDto): string;
 }

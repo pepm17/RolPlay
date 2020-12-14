@@ -24,4 +24,13 @@ class AuthController extends Controller
         );
         return $this->authUserUseCase->register($userDto)->toArray();
     }
+    public function login(Request $req)
+    {
+        $userDto = new RegisterDTO(
+            $req['username'] ? $req['username'] : null,
+            $req['email'],
+            $req['password'],
+        );
+        return response()->json(['Token' => $this->authUserUseCase->login($userDto)]);
+    }
 }

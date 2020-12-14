@@ -29,8 +29,12 @@ final class RegisterDTO
      */
     private $confirmPassword;
 
-    public function __construct(string $userName, string $email, string $password, string $confirmPassword)
-    {
+    public function __construct(
+        string $userName,
+        string $email,
+        string $password,
+        string $confirmPassword = null
+    ) {
         $this->userName = $userName;
         $this->email = $email;
         $this->password = $password;
@@ -46,16 +50,6 @@ final class RegisterDTO
             'email' => $this->email,
             'password' => $this->password,
         ];
-    }
-
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): void
-    {
-        $this->password = $password;
     }
 
     public function getConfirmPassword(): string

@@ -61,4 +61,9 @@ final class UserModel
         if ($this->password->passwordEqual($confirmPassword)) return true;
         return false;
     }
+
+    public function getEmail(): Email
+    {
+        return $this->email;
+    }
 }
