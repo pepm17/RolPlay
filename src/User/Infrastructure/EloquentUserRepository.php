@@ -10,17 +10,17 @@ use Src\User\Infrastructure\Eloquent\UserEloquentModel;
 final class EloquentUserRepository implements IUserRepository
 {
 
-    public function find(UserId $userId): array
+    public function find(UserId $userId): ?array
     {
-        $model = UserEloquentModel::find($userId->getId())->toArray();
-        if (null === $model) return null;
-        return $model;
+        $model = UserEloquentModel::find($userId->getId());
+        if (!$model) return null;
+        return $model->toArray();
     }
 
     public function register(UserModel $userModel): ?array
     {
         $existUser = $this->findEmail($userModel->getEmail()->getEmail());
-        if ($existUser !== null) return null;
+        if (!$existUser) return null;
         $model = UserEloquentModel::create($userModel->toArray())->toArray();
         return $model;
     }
@@ -35,8 +35,6 @@ final class EloquentUserRepository implements IUserRepository
 
     private function findEmail(string $email): ?UserEloquentModel
     {
-        $model = UserEloquentModel::where('email', $email)->first();
-        if (!$model) return null;
-        return $model;
+        return UserEloquentModel::where('email', $email)->first();
     }
 }
