@@ -2,11 +2,10 @@
 
 namespace Src\User\Domain;
 
-use Illuminate\Support\Facades\Hash;
+use Src\Shared\HashValue;
 
 final class Password
 {
-
     /** 
      * @var string
      */
@@ -33,6 +32,6 @@ final class Password
 
     private function hashPassword(): void
     {
-        $this->password = Hash::make($this->password);
+        $this->password = HashValue::makeHash($this->password);
     }
 }
