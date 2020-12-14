@@ -3,6 +3,7 @@
 namespace Src\User\Domain;
 
 use Src\Shared\HashValue;
+use Src\User\Domain\Exceptions\IncorrectCredential;
 use Src\User\Domain\Exceptions\PasswordNotEqual;
 
 final class Password
@@ -28,6 +29,11 @@ final class Password
             throw new PasswordNotEqual("The passwords not equals");
 
         $this->hashPassword();
+    }
+
+    public function isCorrectPassword(string $password): void
+    {
+        if (HashValue::checkHash($password, $this->password)) throw new IncorrectCredential("Incorrect credentials");
     }
 
     private function hashPassword(): void

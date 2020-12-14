@@ -6,8 +6,8 @@ use Src\User\Domain\contracts\IAuthUseCase;
 use Src\User\Domain\contracts\IUserRepository;
 use Src\User\Domain\UserModel;
 use Src\User\Domain\DTOs\UserDto;
+use Src\User\Domain\Exceptions\IncorrectCredential;
 use Src\User\Domain\Exceptions\UserAlreadyExist;
-use Src\User\Domain\Exceptions\UserNotFound;
 
 final class AuthUseCase implements IAuthUseCase
 {
@@ -34,7 +34,7 @@ final class AuthUseCase implements IAuthUseCase
     {
         $userModel = UserModel::fromArray($UserDto->toArray());
         $token = $this->userRepository->login($userModel);
-        if (!$token) throw new UserNotFound("User not found");
+        if (!$token) throw new IncorrectCredential("Incorrect credentials");
         return $token;
     }
 }
