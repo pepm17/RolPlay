@@ -2,26 +2,26 @@
 
 namespace Src\User\Domain;
 
-final class UserModel {
-    
+final class UserModel
+{
     /** 
      * @var UserId
-    */
+     */
     public $id;
 
     /** 
      * @var UserName
-    */
+     */
     private $userName;
 
     /** 
      * @var Email
-    */
+     */
     private $email;
 
     /** 
      * @var Password
-    */
+     */
     private $password;
 
     public function __construct(
@@ -29,7 +29,7 @@ final class UserModel {
         UserName $userName,
         Email $email,
         Password $password
-    ){
+    ) {
         $this->id = $id;
         $this->userName = $userName;
         $this->email = $email;
@@ -46,12 +46,13 @@ final class UserModel {
         );
     }
 
-    public function toArray(): array {
+    public function toArray(): array
+    {
         return [
-            'id' => $this->id->getId(),            
-            'userName' => $this->userName->getUserName(),            
-            'email' => $this->email->getEmail(),            
-            'password' => $this->password->getPassword(),            
+            'id' => $this->id->getId(),
+            'userName' => $this->userName->getUserName(),
+            'email' => $this->email->getEmail(),
+            'password' => $this->password->getPassword(),
         ];
     }
 }
