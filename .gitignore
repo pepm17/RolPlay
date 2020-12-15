@@ -13,3 +13,5 @@ npm-debug.log
 yarn-error.log
 /storage/dbdata
 /storage/DB
+sonar-project.properties
+.scannerwork/

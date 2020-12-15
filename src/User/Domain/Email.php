@@ -25,6 +25,8 @@ final class Email
 
     private function validateEmail(string $email): void
     {
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) throw new EmailNotValid("Invalid email");
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new EmailNotValid("Invalid email");
+        }
     }
 }

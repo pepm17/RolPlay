@@ -13,24 +13,28 @@ final class EloquentUserRepository implements IUserRepository
     public function find(UserId $userId): ?array
     {
         $model = UserEloquentModel::find($userId->getId());
-        if (!$model) return null;
+        if (!$model) {
+            return null;
+        }
         return $model->toArray();
     }
 
     public function register(UserModel $userModel): ?array
     {
         $existUser = $this->findEmail($userModel->getEmail()->getEmail());
-        if ($existUser) return null;
-        $model = UserEloquentModel::create($userModel->toArray())->toArray();
-        return $model;
+        if ($existUser) {
+            return null;
+        }
+        return UserEloquentModel::create($userModel->toArray())->toArray();
     }
 
     public function login(UserModel $userModel): ?string
     {
         $model = $this->findEmail($userModel->getEmail()->getEmail());
-        if (!$model) return null;
-        $token = $model->addToken();
-        return $token;
+        if (!$model) {
+            return null;
+        }
+        return $model->addToken();
     }
 
     private function findEmail(string $email): ?UserEloquentModel

@@ -25,10 +25,10 @@ final class UserModel
     private $password;
 
     public function __construct(
-        UserId $id = null,
         UserName $userName,
         Email $email,
-        Password $password
+        Password $password,
+        UserId $id = null
     ) {
         $this->id = $id;
         $this->userName = $userName;
@@ -39,10 +39,10 @@ final class UserModel
     public static function fromArray(array $data): self
     {
         return new self(
-            $id = ($data['id'] !== null) ? new UserId($data['id']) : null,
             new UserName($data['username']),
             new Email($data['email']),
-            new Password($data['password'])
+            new Password($data['password']),
+            ($data['id'] !== null) ? new UserId($data['id']) : null
         );
     }
 

@@ -11,7 +11,7 @@ use Src\User\Domain\Exceptions\UserAlreadyExist;
 
 final class AuthUseCase implements IAuthUseCase
 {
-    private $userModel;
+    private $userRepository;
 
     public function __construct(IUserRepository $userRepository)
     {
@@ -25,7 +25,9 @@ final class AuthUseCase implements IAuthUseCase
         $userModel->passwordEqual($UserDto->getConfirmPassword());
 
         $user = $this->userRepository->register($userModel);
-        if (!$user) throw new UserAlreadyExist("User already Exist");
+        if (!$user) {
+            throw new UserAlreadyExist("User already Exist");
+        }
 
         return UserModel::fromArray($user);
     }
@@ -34,7 +36,9 @@ final class AuthUseCase implements IAuthUseCase
     {
         $userModel = UserModel::fromArray($UserDto->toArray());
         $token = $this->userRepository->login($userModel);
-        if (!$token) throw new IncorrectCredential("Incorrect credentials");
+        if (!$token) {
+            throw new IncorrectCredential("Incorrect credentials");
+        }
         return $token;
     }
 }

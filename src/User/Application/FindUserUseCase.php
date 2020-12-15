@@ -21,7 +21,9 @@ final class FindUserUseCase implements IFindUserUseCase
     public function execute(int $id): ?UserModel
     {
         $user = $this->userRepository->find(new UserId($id));
-        if (!$user) throw new UserNotFound("User not found");
+        if (!$user) {
+            throw new UserNotFound("User not found");
+        }
         return UserModel::fromArray($user);
     }
 }
