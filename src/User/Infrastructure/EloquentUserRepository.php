@@ -5,6 +5,7 @@ namespace Src\User\Infrastructure;
 use Src\User\Domain\UserId;
 use Src\User\Domain\UserModel;
 use Src\User\Domain\contracts\IUserRepository;
+use Src\User\Domain\Email;
 use Src\User\Infrastructure\Eloquent\UserEloquentModel;
 
 final class EloquentUserRepository implements IUserRepository
@@ -21,24 +22,24 @@ final class EloquentUserRepository implements IUserRepository
 
     public function register(UserModel $userModel): ?array
     {
-        $existUser = $this->findEmail($userModel->getEmail()->getEmail());
-        if ($existUser) {
-            return null;
-        }
         return UserEloquentModel::create($userModel->toArray())->toArray();
     }
 
-    public function login(UserModel $userModel): ?string
+    public function login(UserEloquentModel $userEloquentModel): ?string
     {
-        $model = $this->findEmail($userModel->getEmail()->getEmail());
-        if (!$model) {
-            return null;
-        }
-        return $model->addToken();
+        return $userEloquentModel->addToken();
     }
 
-    private function findEmail(string $email): ?UserEloquentModel
+    public function logout(): void
     {
-        return UserEloquentModel::where('email', $email)->first();
+        $tokens = auth()->user()->tokens;
+        foreach ($tokens as $token) {
+            $token->revoke();
+        }
+    }
+
+    public function findEmail(Email $email): ?UserEloquentModel
+    {
+        return UserEloquentModel::where('email', $email->getEmail())->first();
     }
 }

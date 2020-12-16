@@ -32,9 +32,9 @@ final class Password
         $this->hashPassword();
     }
 
-    public function isCorrectPassword(string $password): void
+    public function correctPassword(string $password): void
     {
-        if (HashValue::checkHash($password, $this->password)) {
+        if (!HashValue::checkHash($password, $this->password)) {
             throw new IncorrectCredential("Incorrect credentials");
         }
     }

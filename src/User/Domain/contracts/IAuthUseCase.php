@@ -3,10 +3,10 @@
 namespace Src\User\Domain\contracts;
 
 use Src\User\Domain\DTOs\UserDto;
-use Src\User\Domain\UserModel;
 
 interface IAuthUseCase
 {
-    public function register(UserDto $UserDto): UserModel;
-    public function login(UserDto $UserDto): string;
+    public function register(UserDto $UserDto): array;
+    public function login(UserDto $UserDto): array;
+    public function logout(): void;
 }

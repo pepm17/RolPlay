@@ -6,39 +6,50 @@ use Src\User\Domain\contracts\IAuthUseCase;
 use Src\User\Domain\contracts\IUserRepository;
 use Src\User\Domain\UserModel;
 use Src\User\Domain\DTOs\UserDto;
+use Src\User\Domain\Email;
 use Src\User\Domain\Exceptions\IncorrectCredential;
 use Src\User\Domain\Exceptions\UserAlreadyExist;
+use Src\User\Domain\UserId;
 
 final class AuthUseCase implements IAuthUseCase
 {
-    private $userRepository;
+    private IUserRepository $userRepository;
 
     public function __construct(IUserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
     }
 
-    public function register(UserDto $UserDto): UserModel
+    public function register(UserDto $userDto): array
     {
-        $userModel = UserModel::fromArray($UserDto->toArray());
-
-        $userModel->passwordEqual($UserDto->getConfirmPassword());
-
-        $user = $this->userRepository->register($userModel);
-        if (!$user) {
+        $userExist = $this->userRepository->findEmail(new Email($userDto->getEmail()));
+        if ($userExist) {
             throw new UserAlreadyExist("User already Exist");
         }
+        $userModel = UserModel::fromArray($userDto->toArray());
 
-        return UserModel::fromArray($user);
+        $userModel->passwordEqual($userDto->getConfirmPassword());
+
+        $user = $this->userRepository->register($userModel);
+
+        return UserModel::fromArray($user)->toArray();
     }
 
-    public function login(UserDto $UserDto): string
+    public function login(UserDto $userDto): array
     {
-        $userModel = UserModel::fromArray($UserDto->toArray());
-        $token = $this->userRepository->login($userModel);
-        if (!$token) {
+        $userExist = $this->userRepository->findEmail(new Email($userDto->getEmail()));
+        if (!$userExist) {
             throw new IncorrectCredential("Incorrect credentials");
         }
-        return $token;
+        $userModel = UserModel::fromArray($userExist->toArray());
+        $userModel->correctPassword($userDto->getPassword());
+        $token = $this->userRepository->login($userExist);
+        $userModel->addToken($token);
+        return  $userModel->toArray();
+    }
+
+    public function logout(): void
+    {
+        return $this->userRepository->logout();
     }
 }

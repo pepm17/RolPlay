@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Src\User\Application\FindUserUseCase;
 use Src\User\Domain\contracts\IFindUserUseCase;
-use Src\User\Infrastructure\EloquentUserRepository;
 
 class UserController extends Controller
 {
-    private $findUserUseCase;
+    private IFindUserUseCase $findUserUseCase;
     public function __construct(IFindUserUseCase $findUserUseCase)
     {
         $this->findUserUseCase = $findUserUseCase;

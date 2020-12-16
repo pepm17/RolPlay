@@ -22,4 +22,15 @@ final class UserEloquentModel extends Authenticatable
     {
         return $this->createToken('Users')->accessToken;
     }
+
+    public function deleteActualToken($actualToken): bool
+    {
+        foreach ($this->tokens as $token) {
+            if ($token === $actualToken) {
+                $token->revoke();
+                return true;
+            }
+        }
+        return false;
+    }
 }

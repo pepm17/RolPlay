@@ -4,25 +4,11 @@ namespace Src\User\Domain;
 
 final class UserModel
 {
-    /** 
-     * @var UserId
-     */
-    public $id;
-
-    /** 
-     * @var UserName
-     */
-    private $userName;
-
-    /** 
-     * @var Email
-     */
-    private $email;
-
-    /** 
-     * @var Password
-     */
-    private $password;
+    private $id;
+    private UserName $userName;
+    private Email $email;
+    private Password $password;
+    private $token;
 
     public function __construct(
         UserName $userName,
@@ -34,6 +20,7 @@ final class UserModel
         $this->userName = $userName;
         $this->email = $email;
         $this->password = $password;
+        $this->token = null;
     }
 
     public static function fromArray(array $data): self
@@ -53,6 +40,7 @@ final class UserModel
             'username' => $this->userName->getUserName(),
             'email' => $this->email->getEmail(),
             'password' => $this->password->getPassword(),
+            'token' => ($this->token !== null) ? $this->token->value() : '',
         ];
     }
 
@@ -61,8 +49,18 @@ final class UserModel
         $this->password->passwordEqual($confirmPassword);
     }
 
+    public function correctPassword(string $confirmPassword): void
+    {
+        $this->password->correctPassword($confirmPassword);
+    }
+
     public function getEmail(): Email
     {
         return $this->email;
+    }
+
+    public function addToken(string $token)
+    {
+        $this->token = new Token($token);
     }
 }

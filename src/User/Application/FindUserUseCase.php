@@ -11,7 +11,7 @@ use Src\User\Domain\UserId;
 final class FindUserUseCase implements IFindUserUseCase
 {
 
-    private $userRepository;
+    private IUserRepository $userRepository;
 
     public function __construct(IUserRepository $userRepository)
     {

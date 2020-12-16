@@ -8,7 +8,7 @@ use Src\User\Domain\DTOs\UserDto;
 
 class AuthController extends Controller
 {
-    private $authUserUseCase;
+    private IAuthUseCase $authUserUseCase;
 
     public function __construct(IAuthUseCase $authUserUseCase)
     {
@@ -22,7 +22,7 @@ class AuthController extends Controller
             $req['password'],
             $req['confirmPassword']
         );
-        return $this->authUserUseCase->register($userDto)->toArray();
+        return $this->authUserUseCase->register($userDto);
     }
     public function login(Request $req)
     {
@@ -31,6 +31,11 @@ class AuthController extends Controller
             $req['email'],
             $req['password'],
         );
-        return response()->json(['Token' => $this->authUserUseCase->login($userDto)]);
+        return $this->authUserUseCase->login($userDto);
+    }
+
+    public function logout()
+    {
+        return response()->json(['logout' => "User succesfully logout"]);
     }
 }
