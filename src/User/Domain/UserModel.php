@@ -44,12 +44,12 @@ final class UserModel
         ];
     }
 
-    public function passwordEqual(string $confirmPassword): void
+    public function passwordEqual(Password $confirmPassword): void
     {
         $this->password->passwordEqual($confirmPassword);
     }
 
-    public function correctPassword(string $confirmPassword): void
+    public function correctPassword(Password $confirmPassword): void
     {
         $this->password->correctPassword($confirmPassword);
     }
@@ -59,8 +59,8 @@ final class UserModel
         return $this->email;
     }
 
-    public function addToken(string $token)
+    public function addToken(Token $token)
     {
-        $this->token = new Token($token);
+        $this->token = $token;
     }
 }

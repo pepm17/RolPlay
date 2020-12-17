@@ -23,18 +23,18 @@ final class Password
         return $this->password;
     }
 
-    public function passwordEqual(string $confirmPassword): void
+    public function passwordEqual(Password $confirmPassword): void
     {
-        if ($this->password !== $confirmPassword) {
+        if ($confirmPassword->getPassword() === ($this->password)) {
             throw new PasswordNotEqual("The passwords not equals");
         }
 
         $this->hashPassword();
     }
 
-    public function correctPassword(string $password): void
+    public function correctPassword(Password $password): void
     {
-        if (!HashValue::checkHash($password, $this->password)) {
+        if (!HashValue::checkHash($password->getPassword(), $this->password)) {
             throw new IncorrectCredential("Incorrect credentials");
         }
     }
