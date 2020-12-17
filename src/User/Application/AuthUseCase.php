@@ -10,7 +10,6 @@ use Src\User\Domain\Email;
 use Src\User\Domain\Exceptions\IncorrectCredential;
 use Src\User\Domain\Exceptions\UserAlreadyExist;
 use Src\User\Domain\Password;
-use Src\User\Domain\Token;
 use Src\User\Domain\UserId;
 
 final class AuthUseCase implements IAuthUseCase
@@ -46,7 +45,7 @@ final class AuthUseCase implements IAuthUseCase
         $userModel = UserModel::fromArray($userExist->toArray());
         $userModel->correctPassword(new Password($userDto->getPassword()));
         $token = $this->userRepository->login($userExist);
-        $userModel->addToken(new Token($token));
+        $userModel->addToken($token);
         return  $userModel->toArray();
     }
 
