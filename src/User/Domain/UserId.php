@@ -2,18 +2,21 @@
 
 namespace Src\User\Domain;
 
-final class UserId {
-    
+final class UserId
+{
+
     /** 
-     * @var int
-    */
+     * @var string
+     */
     private $id;
 
-    public function __construct(int $id){
+    public function __construct(string $id)
+    {
         $this->id = $id;
     }
-    
-    public function getId(): int{
+
+    public function getId(): string
+    {
         return $this->id;
     }
 }

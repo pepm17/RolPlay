@@ -25,7 +25,7 @@ final class Password
 
     public function passwordEqual(Password $confirmPassword): void
     {
-        if ($confirmPassword->getPassword() === ($this->password)) {
+        if ($confirmPassword->getPassword() !== ($this->password)) {
             throw new PasswordNotEqual("The passwords not equals");
         }
 
