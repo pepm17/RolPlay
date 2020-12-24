@@ -2,7 +2,7 @@
 
 namespace Src\CharacterSheet\Domain;
 
-use Src\CharacterSheet\Domain\Exceptions\HabilityNotExist;
+use Src\CharacterSheet\Domain\Exception\HabilityNotExist;
 use Src\Hability\Domain\Hability;
 use Src\Shared\Domain\Dice;
 
@@ -61,13 +61,13 @@ final class CharacterSheet
                 return;
             }
         }
-        throw new HabilityNotExist("The CharacterSheet haven't this hability");
+        throw new HabilityNotExist("The CharacterSheet hasn't this hability");
     }
 
     public function toArray(): array
     {
         return [
-            'id' => ($this->id !== null) ? $this->id->value() : '',
+            'id' => $this->id->value(),
             'Name' => $this->name->value(),
             'Description' => $this->description->value(),
             'LifePoints' => $this->lifePoints->value(),
