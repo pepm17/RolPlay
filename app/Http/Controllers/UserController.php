@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Src\User\Domain\contracts\IFindUserUseCase;
+use Src\Shared\Domain\CommandBus;
+use Src\User\Application\FindById\FindUserByIdCommand;
 
 class UserController extends Controller
 {
-    private IFindUserUseCase $findUserUseCase;
-    public function __construct(IFindUserUseCase $findUserUseCase)
+    private CommandBus $commandBus;
+    public function __construct(CommandBus $commandBus)
     {
-        $this->findUserUseCase = $findUserUseCase;
+        $this->commandBus = $commandBus;
     }
     public function show($id)
     {
-        $user = $this->findUserUseCase->execute($id);
-        return response()->json($user->toArray());
+        $command = new FindUserByIdCommand($id);
+        return $this->commandBus->execute($command);
     }
 }

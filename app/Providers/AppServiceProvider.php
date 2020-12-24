@@ -2,13 +2,15 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Src\User\Application\AuthUseCase;
-use Src\User\Application\FindUserUseCase;
-use Src\User\Domain\contracts\IAuthUseCase;
-use Src\User\Domain\contracts\IFindUserUseCase;
-use Src\User\Domain\contracts\IUserRepository;
+use Src\User\Domain\Contracts\UserRepository;
 use Src\User\Infrastructure\EloquentUserRepository;
+use Src\Shared\Domain\CommandBus;
+use Src\Shared\Domain\Container;
+use Src\Shared\Domain\Inflector;
+use Src\Shared\Infrastructure\InMemoryLaravelCommandBus;
+use Src\Shared\Infrastructure\LaravelContainer;
+use Src\Shared\Infrastructure\NameInflector;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,8 +31,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->bind(IUserRepository::class, EloquentUserRepository::class);
-        $this->app->bind(IFindUserUseCase::class, FindUserUseCase::class);
-        $this->app->bind(IAuthUseCase::class, AuthUseCase::class);
+        $this->app->bind(UserRepository::class, EloquentUserRepository::class);
+
+        $this->app->bind(CommandBus::class, InMemoryLaravelCommandBus::class);
+        $this->app->bind(Container::class, LaravelContainer::class);
+        $this->app->bind(Inflector::class, NameInflector::class);
     }
 }

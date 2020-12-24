@@ -14,7 +14,6 @@ final class Email
 
     public function __construct(string $email)
     {
-        $this->validateEmail($email);
         $this->email = $email;
     }
 
@@ -23,9 +22,9 @@ final class Email
         return $this->email;
     }
 
-    private function validateEmail(string $email): void
+    public function validateEmail(): void
     {
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
             throw new EmailNotValid("Invalid email");
         }
     }

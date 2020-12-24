@@ -2,36 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use Src\User\Domain\contracts\IAuthUseCase;
 use Illuminate\Http\Request;
-use Src\User\Domain\DTOs\UserDto;
+use Src\Shared\Domain\CommandBus;
+use Src\User\Application\Login\LoginUserCommand;
+use Src\User\Application\Register\RegisterUserCommand;
 
 class AuthController extends Controller
 {
-    private IAuthUseCase $authUserUseCase;
+    private $commandBus;
 
-    public function __construct(IAuthUseCase $authUserUseCase)
+    public function __construct(CommandBus $commandBus)
     {
-        $this->authUserUseCase = $authUserUseCase;
+        $this->commandBus = $commandBus;
     }
+
     public function register(Request $req)
     {
-        $userDto = new UserDto(
+        $command = new RegisterUserCommand(
             $req['username'],
             $req['email'],
             $req['password'],
             $req['confirmPassword']
         );
-        return $this->authUserUseCase->register($userDto);
+        return $this->commandBus->execute($command);
     }
+
     public function login(Request $req)
     {
-        $userDto = new UserDto(
-            $req['username'] ? $req['username'] : null,
-            $req['email'],
+        $command = new LoginUserCommand(
+            $req['username'] ? $req['username'] : '',
+            $req['email'] ? $req['email'] : '',
             $req['password'],
         );
-        return $this->authUserUseCase->login($userDto);
+        return $this->commandBus->execute($command);
     }
 
     public function logout()
