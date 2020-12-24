@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CharacterSheetController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 /*
@@ -17,6 +18,8 @@ use App\Http\Controllers\UserController;
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+
+Route::resource('charactersheet', CharacterSheetController::class);
 
 Route::resource('user', UserController::class)->middleware('auth:api');
 Route::post('user/register', [AuthController::class, 'register']);
