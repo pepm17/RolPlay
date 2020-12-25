@@ -4,6 +4,7 @@ namespace Src\CharacterSheet\Application\Create;
 
 use Src\Hability\Domain\Hability;
 use Src\Shared\Domain\Command;
+use Src\Shared\UuidGenerator;
 
 final class CreateCharacterSheetCommand implements Command
 {
@@ -14,7 +15,7 @@ final class CreateCharacterSheetCommand implements Command
 
     public function __construct(string $name, string $description, int $lifePoints)
     {
-        $this->id = 1;
+        $this->id = UuidGenerator::generator();
         $this->name = $name;
         $this->description = $description;
         $this->lifePoints = $lifePoints;
@@ -41,10 +42,10 @@ final class CreateCharacterSheetCommand implements Command
     public function toArray(): array
     {
         return [
-            'id' => 22,
+            'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'lifePoints' => $this->lifePoints,
+            'lifePoint' => $this->lifePoints,
         ];
     }
 }
