@@ -6,7 +6,7 @@ final class Dice
 {
     private int $result;
 
-    public function __constructor(int $result)
+    public function __construct(int $result)
     {
         $this->result = $result;
     }
