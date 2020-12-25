@@ -1,6 +1,6 @@
 <?php
 
-namespace Src\CharacterSheet\Domain\Exception;
+namespace Src\Hability\Domain\Exceptions;
 
 final class HabilityNotExist extends \DomainException
 {
