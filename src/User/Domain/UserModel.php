@@ -69,8 +69,8 @@ final class UserModel
         return $this->email;
     }
 
-    public function addToken(string $token)
+    public function addToken(Token $token)
     {
-        $this->token = new Token($token);
+        $this->token = $token;
     }
 }
