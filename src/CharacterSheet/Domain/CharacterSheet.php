@@ -37,41 +37,19 @@ final class CharacterSheet
         );
     }
 
-    public function addHability(Hability $hability)
+    public function addHability(Hability $hability, Dice $dado)
     {
-        array_push($this->habilities, $hability->toArray());
-    }
-
-    public function damage(Hability $hability, Dice $dado)
-    {
-        foreach ($this->habilities as $value) {
-            if ($value === $hability) {
-                $this->lifePoints = ($value->getPoint()->value() + $this->lifePoints) - $dado->getResultDice();
-                return;
-            }
-        }
-        throw new HabilityNotExist("The CharacterSheet haven't this hability");
-    }
-
-    public function health(Hability $hability, Dice $dado)
-    {
-        foreach ($this->habilities as $value) {
-            if ($value === $hability) {
-                $this->lifePoints = ($value->getPoint()->value() + $this->lifePoints) + $dado->getResultDice();
-                return;
-            }
-        }
-        throw new HabilityNotExist("The CharacterSheet hasn't this hability");
+        $this->habilities[$hability->getName()->value()] = $dado->getResultDice();
     }
 
     public function toArray(): array
     {
         return [
             'id' => $this->id->value(),
-            'Name' => $this->name->value(),
-            'Description' => $this->description->value(),
-            'LifePoints' => $this->lifePoints->value(),
-            'Habilities' => $this->habilities
+            'name' => $this->name->value(),
+            'description' => $this->description->value(),
+            'lifePoint' => $this->lifePoints->value(),
+            'habilities' => $this->habilities
         ];
     }
 }

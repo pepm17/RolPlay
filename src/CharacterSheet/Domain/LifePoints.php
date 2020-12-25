@@ -11,7 +11,7 @@ final class LifePoints
         $this->lifePoints = $lifePoints;
     }
 
-    public function value()
+    public function value(): int
     {
         return $this->lifePoints;
     }
