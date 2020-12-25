@@ -33,35 +33,39 @@ final class AddHabilityUseCase
         if (!$characterSheetModel) {
             throw new CharacterSheetNotExist("Character sheet not exist");
         }
+        $characterSheetEntity = CharacterSheet::fromArray($characterSheetModel->toArray());
 
-        $this->verifyHability($array["idHability"]);
+        $habilities = $this->convertArrayToHabilityArray($array);
+
+        $characterSheetEntity->addHability(
+            new CharacterSheetHability($habilities)
+        );
 
         $this->characterSheetRepository->addHability(
             $characterSheetModel,
             $array
         );
 
-        $characterSheetEntity = CharacterSheet::fromArray($characterSheetModel->toArray());
-
-        $habilies = array();
-        foreach ($characterSheetModel->habilities as $habilityModel) {
-            $hability = Hability::fromArray($habilityModel->toArray());
-            $dice = new Dice($habilityModel->pivot->points);
-            $habilities[$hability->getName()->value()] = $dice->getResultDice();
-        }
-
-        $characterSheetEntity->addHability(
-            new CharacterSheetHability($habilities)
-        );
-
         return $characterSheetEntity->toArray();
     }
 
-    private function verifyHability(string $idHability): void
+    private function convertArrayToHabilityArray(array $array): array
+    {
+        $habilities = [];
+        for ($i = 0; $i < count($array['idHability']); $i++) {
+            $habilityEntity = $this->verifyHability($array["idHability"][$i]);
+            $dice = new Dice($array['points'][$i]);
+            $habilities[$habilityEntity->getName()->value()] = $dice->getResultDice();
+        }
+        return $habilities;
+    }
+
+    private function verifyHability(string $idHability): Hability
     {
         $commandFindHability = new FindHabilityCommand(
             $idHability
         );
-        $this->commandBus->execute($commandFindHability);
+        $habilityEntity = $this->commandBus->execute($commandFindHability);
+        return $habilityEntity;
     }
 }

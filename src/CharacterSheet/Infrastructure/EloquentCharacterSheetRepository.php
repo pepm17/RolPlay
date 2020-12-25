@@ -25,9 +25,11 @@ final class EloquentCharacterSheetRepository implements CharacterSheetRepository
         CharacterSheetEloquentModel $model,
         array $array
     ): void {
-        $model->habilities()->attach(
-            $array['idHability'],
-            ['points' => $array['points']]
-        );
+        $sync_data = [];
+        for ($i = 0; $i < count($array['idHability']); $i++) {
+            $sync_data[$array['idHability'][$i]] = ['points' => $array['points'][$i]];
+        }
+
+        $model->habilities()->sync($sync_data);
     }
 }

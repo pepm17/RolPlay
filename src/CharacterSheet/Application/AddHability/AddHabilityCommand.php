@@ -11,23 +11,23 @@ final class AddHabilityCommand implements Command
     private $idHability;
     private $points;
 
-    public function __construct(string $idCharacterSheet, string $idHability, int $points)
+    public function __construct(string $idCharacterSheet, array $idHability, array $points)
     {
         $this->idCharacterSheet = $idCharacterSheet;
         $this->idHability = $idHability;
         $this->points = $points;
     }
 
-    public function getId(): int
+    public function idCharacterSheet(): string
     {
         return $this->idCharacterSheet;
     }
 
-    public function getName(): string
+    public function idHability(): array
     {
         return $this->idHability;
     }
-    public function getDescription(): string
+    public function points(): array
     {
         return $this->points;
     }
