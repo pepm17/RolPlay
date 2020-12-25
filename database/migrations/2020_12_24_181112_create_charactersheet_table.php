@@ -17,7 +17,7 @@ class CreateCharacterSheetTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->unsignedInteger('lifePoints');
+            $table->unsignedInteger('lifePoint');
             $table->timestamps();
         });
     }

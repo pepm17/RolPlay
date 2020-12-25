@@ -12,19 +12,20 @@ final class CharacterSheet
     private Name $name;
     private Description $description;
     private LifePoints $lifePoints;
-    private $habilities;
+    private ?CharacterSheetHability $habilities;
 
     public function __construct(
         CharacterSheetId $id,
         Name $name,
         Description $description,
-        LifePoints $lifePoints
+        LifePoints $lifePoints,
+        CharacterSheetHability $habilities = null
     ) {
         $this->id = $id;
         $this->name = $name;
         $this->description = $description;
         $this->lifePoints = $lifePoints;
-        $this->habilities = array();
+        $this->habilities = $habilities;
     }
 
     public static function fromArray(array $data): self
@@ -33,13 +34,13 @@ final class CharacterSheet
             new CharacterSheetId($data['id']),
             new Name($data['name']),
             new Description($data['description']),
-            new LifePoints($data['lifePoints'])
+            new LifePoints($data['lifePoint'])
         );
     }
 
-    public function addHability(Hability $hability, Dice $dado)
+    public function addHability(CharacterSheetHability $hability)
     {
-        $this->habilities[$hability->getName()->value()] = $dado->getResultDice();
+        $this->habilities = $hability;
     }
 
     public function toArray(): array
@@ -49,7 +50,7 @@ final class CharacterSheet
             'name' => $this->name->value(),
             'description' => $this->description->value(),
             'lifePoint' => $this->lifePoints->value(),
-            'habilities' => $this->habilities
+            'habilities' => $this->habilities->value()
         ];
     }
 }

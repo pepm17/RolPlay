@@ -3,6 +3,7 @@
 namespace Src\CharacterSheet\Application\Find;
 
 use Src\CharacterSheet\Domain\CharacterSheet;
+use Src\CharacterSheet\Domain\CharacterSheetHability;
 use Src\CharacterSheet\Domain\CharacterSheetId;
 use Src\CharacterSheet\Domain\Contracts\CharacterSheetRepository;
 use Src\CharacterSheet\Domain\Exception\CharacterSheetNotExist;
@@ -27,13 +28,16 @@ final class FindCharacterSheetUseCase
 
         $characterSheetEntity = CharacterSheet::fromArray($characterSheetModel->toArray());
 
+        $habilies = array();
         foreach ($characterSheetModel->habilities as $habilityModel) {
-            $characterSheetEntity->addHability(
-                Hability::fromArray($habilityModel->toArray()),
-                new Dice($habilityModel->pivot->points)
-            );
+            $hability = Hability::fromArray($habilityModel->toArray());
+            $dice = new Dice($habilityModel->pivot->points);
+            $habilities[$hability->getName()->value()] = $dice->getResultDice();
         }
 
+        $characterSheetEntity->addHability(
+            new CharacterSheetHability($habilities)
+        );
         return $characterSheetEntity;
     }
 }
