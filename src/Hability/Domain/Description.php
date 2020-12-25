@@ -8,7 +8,7 @@ final class Description
 
     public function __construct(string $description)
     {
-        $this->$description = $description;
+        $this->description = $description;
     }
 
     public function value()

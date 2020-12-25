@@ -8,7 +8,7 @@ final class Name
 
     public function __construct(string $name)
     {
-        $this->$name = $name;
+        $this->name = $name;
     }
 
     public function value()
