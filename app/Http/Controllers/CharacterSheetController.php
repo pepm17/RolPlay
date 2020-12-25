@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Src\CharacterSheet\Application\AddHability\AddHabilityCommand;
 use Src\CharacterSheet\Application\Create\CreateCharacterSheetCommand;
-use Src\CharacterSheet\Application\Create\CreateCharacterSheetCommandHandler;
 use Src\Shared\Domain\CommandBus;
 
 class CharacterSheetController extends Controller
@@ -20,7 +19,16 @@ class CharacterSheetController extends Controller
         $command = new CreateCharacterSheetCommand(
             $req['name'],
             $req['description'],
-            $req['lifePoints']
+            $req['lifePoint']
+        );
+        return $this->commandBus->execute($command);
+    }
+    public function addHability(Request $req)
+    {
+        $command = new AddHabilityCommand(
+            $req['idCharacterSheet'],
+            $req['idHability'],
+            $req['points']
         );
         return $this->commandBus->execute($command);
     }
