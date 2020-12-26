@@ -8,6 +8,8 @@ use Src\CharacterSheet\Domain\Contracts\CharacterSheetRepository;
 use Src\CharacterSheet\Domain\Description;
 use Src\CharacterSheet\Domain\LifePoints;
 use Src\CharacterSheet\Domain\Name;
+use Src\Tabletop\Domain\TabletopId;
+use Src\User\Domain\UserId;
 
 final class CreateCharacterSheetUseCase
 {
@@ -24,7 +26,9 @@ final class CreateCharacterSheetUseCase
             new CharacterSheetId($data['id']),
             new Name($data['name']),
             new Description($data['description']),
-            new LifePoints($data['lifePoint'])
+            new LifePoints($data['lifePoint']),
+            new TabletopId($data['tabletop_id']),
+            new UserId($data['user_id'])
         );
         return $this->characterSheetRepository->create($characterSheet);
     }

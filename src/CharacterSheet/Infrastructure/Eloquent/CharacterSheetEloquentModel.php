@@ -13,6 +13,8 @@ final class CharacterSheetEloquentModel extends Model
         'name',
         'description',
         'lifePoint',
+        'tabletop_id',
+        'user_id'
     ];
 
     public function habilities()

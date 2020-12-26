@@ -5,6 +5,8 @@ namespace Src\CharacterSheet\Domain;
 use Src\CharacterSheet\Domain\Exception\HabilityNotExist;
 use Src\Hability\Domain\Hability;
 use Src\Shared\Domain\Dice;
+use Src\Tabletop\Domain\TabletopId;
+use Src\User\Domain\UserId;
 
 final class CharacterSheet
 {
@@ -12,6 +14,8 @@ final class CharacterSheet
     private Name $name;
     private Description $description;
     private LifePoints $lifePoints;
+    private UserId $userId;
+    private TabletopId $tabletopId;
     private ?CharacterSheetHability $habilities;
 
     public function __construct(
@@ -19,12 +23,16 @@ final class CharacterSheet
         Name $name,
         Description $description,
         LifePoints $lifePoints,
+        TabletopId $tabletopId,
+        UserId $userId,
         CharacterSheetHability $habilities = null
     ) {
         $this->id = $id;
         $this->name = $name;
         $this->description = $description;
         $this->lifePoints = $lifePoints;
+        $this->tabletopId = $tabletopId;
+        $this->userId = $userId;
         $this->habilities = $habilities;
     }
 
@@ -34,7 +42,9 @@ final class CharacterSheet
             new CharacterSheetId($data['id']),
             new Name($data['name']),
             new Description($data['description']),
-            new LifePoints($data['lifePoint'])
+            new LifePoints($data['lifePoint']),
+            new TabletopId($data['tabletop_id']),
+            new UserId($data['user_id'])
         );
     }
 
@@ -50,7 +60,9 @@ final class CharacterSheet
             'name' => $this->name->value(),
             'description' => $this->description->value(),
             'lifePoint' => $this->lifePoints->value(),
-            'habilities' => $this->habilities->value()
+            'tabletop_id' => $this->tabletopId->value(),
+            'user_id' => $this->userId->getId(),
+            'habilities' => $this->habilities ? $this->habilities->value() : []
         ];
     }
 }

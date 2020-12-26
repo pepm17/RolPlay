@@ -19,7 +19,9 @@ class CharacterSheetController extends Controller
         $command = new CreateCharacterSheetCommand(
             $req['name'],
             $req['description'],
-            $req['lifePoint']
+            $req['lifePoint'],
+            $req['tabletop_id'],
+            $req['user_id']
         );
         return $this->commandBus->execute($command);
     }

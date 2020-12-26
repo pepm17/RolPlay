@@ -12,13 +12,22 @@ final class CreateCharacterSheetCommand implements Command
     private $name;
     private $description;
     private $lifePoints;
+    private $tabletopId;
+    private $userId;
 
-    public function __construct(string $name, string $description, int $lifePoints)
-    {
+    public function __construct(
+        string $name,
+        string $description,
+        int $lifePoints,
+        string $tabletopId,
+        string $userId
+    ) {
         $this->id = UuidGenerator::generator();
         $this->name = $name;
         $this->description = $description;
         $this->lifePoints = $lifePoints;
+        $this->tabletopId = $tabletopId;
+        $this->userId = $userId;
     }
 
     public function getId(): int
@@ -38,6 +47,10 @@ final class CreateCharacterSheetCommand implements Command
     {
         return $this->lifePoints;
     }
+    public function getUserId(): string
+    {
+        return $this->userId;
+    }
 
     public function toArray(): array
     {
@@ -46,6 +59,8 @@ final class CreateCharacterSheetCommand implements Command
             'name' => $this->name,
             'description' => $this->description,
             'lifePoint' => $this->lifePoints,
+            'tabletop_id' => $this->userId,
+            'user_id' => $this->userId,
         ];
     }
 }
