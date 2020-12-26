@@ -11,6 +11,9 @@ use Src\Hability\Infrastructure\EloquentHabilityRepository;
 use Src\User\Domain\Contracts\UserRepository;
 use Src\User\Infrastructure\EloquentUserRepository;
 
+use Src\Tabletop\Domain\Contracts\TabletopRepository;
+use Src\Tabletop\Infrastructure\EloquentTabletopRepository;
+
 use Src\Shared\Domain\CommandBus;
 use Src\Shared\Domain\Container;
 use Src\Shared\Domain\Inflector;
@@ -19,7 +22,6 @@ use Src\Shared\Infrastructure\LaravelContainer;
 use Src\Shared\Infrastructure\NameInflector;
 
 use Illuminate\Support\ServiceProvider;
-use Src\Hability\Application\Find\FindHabilityUseCase;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -43,6 +45,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(UserRepository::class, EloquentUserRepository::class);
         $this->app->bind(CharacterSheetRepository::class, EloquentCharacterSheetRepository::class);
         $this->app->bind(HabilityRepository::class, EloquentHabilityRepository::class);
+        $this->app->bind(TabletopRepository::class, EloquentTabletopRepository::class);
 
         $this->app->bind(CommandBus::class, InMemoryLaravelCommandBus::class);
         $this->app->bind(Container::class, LaravelContainer::class);

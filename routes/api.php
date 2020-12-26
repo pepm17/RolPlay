@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CharacterSheetController;
 use App\Http\Controllers\HabilityController;
+use App\Http\Controllers\TabletopController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 /*
@@ -23,6 +24,7 @@ use App\Http\Controllers\UserController;
 Route::resource('charactersheet', CharacterSheetController::class);
 Route::post('charactersheet/addHability', [CharacterSheetController::class, 'addHability']);
 Route::resource('hability', HabilityController::class);
+Route::resource('tabletop', TabletopController::class);
 
 Route::resource('user', UserController::class)->middleware('auth:api');
 Route::post('user/register', [AuthController::class, 'register']);
