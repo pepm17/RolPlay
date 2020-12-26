@@ -27,25 +27,19 @@ final class AddHabilityUseCase
 
     public function __invoke(array $array)
     {
-        $characterSheetModel = $this->characterSheetRepository->find(
-            new CharacterSheetId($array["idCharacterSheet"])
+        $habilities = $this->convertArrayToHabilityArray($array);
+
+        $characterSheetEntity = $this->characterSheetRepository->addHability(
+            new CharacterSheetId($array["idCharacterSheet"]),
+            $array
         );
-        if (!$characterSheetModel) {
+        if (!$characterSheetEntity) {
             throw new CharacterSheetNotExist("Character sheet not exist");
         }
-        $characterSheetEntity = CharacterSheet::fromArray($characterSheetModel->toArray());
-
-        $habilities = $this->convertArrayToHabilityArray($array);
 
         $characterSheetEntity->addHability(
             new CharacterSheetHability($habilities)
         );
-
-        $this->characterSheetRepository->addHability(
-            $characterSheetModel,
-            $array
-        );
-
         return $characterSheetEntity->toArray();
     }
 
