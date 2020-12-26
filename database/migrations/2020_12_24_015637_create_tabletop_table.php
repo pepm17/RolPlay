@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCharacterSheetTable extends Migration
+class CreateTabletopTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,15 @@ class CreateCharacterSheetTable extends Migration
      */
     public function up()
     {
-        Schema::create('charactersheet', function (Blueprint $table) {
+        Schema::create('tabletop', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->unsignedInteger('lifePoint');
-            $table->unsignedBigInteger('tabletop_id');
-            $table->unsignedBigInteger('user_id');
+            $table->string('dungeonMaster');
             $table->timestamps();
 
-            $table->foreign('tabletop_id')
-                ->references('id')
-                ->on('tabletop')
-                ->onDelete('cascade');
-            $table->foreign('user_id')
-                ->references('id')
+            $table->foreign('dungeonMaster')
+                ->references('username')
                 ->on('users')
                 ->onDelete('cascade');
         });
@@ -40,6 +34,6 @@ class CreateCharacterSheetTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('charactersheet');
+        Schema::dropIfExists('tabletop');
     }
 }

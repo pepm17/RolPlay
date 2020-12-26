@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCharacterSheetTable extends Migration
+class CreateTabletopUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateCharacterSheetTable extends Migration
      */
     public function up()
     {
-        Schema::create('charactersheet', function (Blueprint $table) {
+        Schema::create('tabletop_user', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('description');
-            $table->unsignedInteger('lifePoint');
             $table->unsignedBigInteger('tabletop_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
@@ -40,6 +37,6 @@ class CreateCharacterSheetTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('charactersheet');
+        Schema::dropIfExists('tabletop_user');
     }
 }

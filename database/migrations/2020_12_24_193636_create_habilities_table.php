@@ -17,7 +17,13 @@ class CreateHabilitiesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
+            $table->unsignedBigInteger('tabletop_id');
             $table->timestamps();
+
+            $table->foreign('tabletop_id')
+                ->references('id')
+                ->on('tabletop')
+                ->onDelete('cascade');
         });
     }
 
