@@ -28,7 +28,7 @@ final class FindCharacterSheetUseCase
 
         $characterSheetEntity = CharacterSheet::fromArray($characterSheetModel->toArray());
 
-        $habilies = array();
+        $habilities = [];
         foreach ($characterSheetModel->habilities as $habilityModel) {
             $hability = Hability::fromArray($habilityModel->toArray());
             $dice = new Dice($habilityModel->pivot->points);
