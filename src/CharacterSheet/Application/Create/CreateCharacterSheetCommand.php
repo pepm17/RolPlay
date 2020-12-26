@@ -51,6 +51,10 @@ final class CreateCharacterSheetCommand implements Command
     {
         return $this->userId;
     }
+    public function getTableTopId(): string
+    {
+        return $this->tabletopId;
+    }
 
     public function toArray(): array
     {
@@ -59,7 +63,7 @@ final class CreateCharacterSheetCommand implements Command
             'name' => $this->name,
             'description' => $this->description,
             'lifePoint' => $this->lifePoints,
-            'tabletop_id' => $this->userId,
+            'tabletop_id' => $this->tabletopId,
             'user_id' => $this->userId,
         ];
     }
