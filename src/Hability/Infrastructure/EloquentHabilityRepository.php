@@ -13,14 +13,14 @@ final class EloquentHabilityRepository implements HabilityRepository
     {
         return HabilityEloquentModel::create($hability->toArray())->toArray();
     }
-    public function find(HabilityId $habilityId): ?array
+    public function find(HabilityId $habilityId): ?Hability
     {
-        $habilityId = HabilityEloquentModel::find(
+        $habilityEloquent = HabilityEloquentModel::find(
             $habilityId->value()
         );
-        if (!$habilityId) {
+        if (!$habilityEloquent) {
             return null;
         }
-        return $habilityId->toArray();
+        return Hability::fromArray($habilityEloquent->toArray());
     }
 }

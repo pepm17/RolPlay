@@ -19,11 +19,10 @@ final class FindHabilityUseCase
     public function __invoke(array $array): Hability
     {
         $habilityId = new HabilityId($array['id']);
-        $habilityArrayRepository = $this->habilityRepository->find($habilityId);
-        if (!$habilityArrayRepository) {
+        $habilityEntity = $this->habilityRepository->find($habilityId);
+        if (!$habilityEntity) {
             throw new HabilityNotExist("Hability Not Exist");
         }
-        $habilityEntity = Hability::fromArray($habilityArrayRepository);
         return $habilityEntity;
     }
 }
