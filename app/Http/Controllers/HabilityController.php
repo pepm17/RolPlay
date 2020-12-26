@@ -19,7 +19,8 @@ class HabilityController extends Controller
     {
         $command = new CreateHabilityCommand(
             $request['name'],
-            $request['description']
+            $request['description'],
+            $request['tabletop_id']
         );
         return $this->commandBus->execute($command);
     }

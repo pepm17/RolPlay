@@ -13,5 +13,6 @@ final class HabilityEloquentModel extends Model
         'name',
         'description',
         'points',
+        'tabletop_id'
     ];
 }
