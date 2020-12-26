@@ -32,6 +32,16 @@ final class Tabletop
         $this->participants = [];
     }
 
+    public static function fromArray(array $data): self
+    {
+        return new self(
+            new TabletopId($data['id']),
+            new Name($data['name']),
+            new Description($data['description']),
+            new UserName($data['dungeonMaster'])
+        );
+    }
+
     public function addCharacterSheets(CharacterSheet $characterSheets)
     {
         $this->characterSheets[] = $characterSheets;
