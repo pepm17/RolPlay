@@ -2,6 +2,8 @@
 
 namespace Src\User\Application\FindById;
 
+use Src\User\Domain\UserId;
+
 final class FindUserByIdCommandHandler
 {
     private FindUserByIdUseCase $find;
@@ -13,6 +15,6 @@ final class FindUserByIdCommandHandler
 
     public function handle(FindUserByIdCommand $command)
     {
-        return $this->find->__invoke($command->getId());
+        return $this->find->__invoke(new UserId($command->getId()));
     }
 }

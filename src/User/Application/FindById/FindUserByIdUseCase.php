@@ -16,12 +16,12 @@ final class FindUserByIdUseCase
         $this->userRepository = $userRepository;
     }
 
-    public function __invoke(int $id)
+    public function __invoke(UserId $id): UserModel
     {
-        $user = $this->userRepository->find(new UserId($id));
+        $user = $this->userRepository->find($id);
         if (!$user) {
             throw new UserNotFound("User not found");
         }
-        return UserModel::fromArray($user)->toArray();
+        return $user;
     }
 }

@@ -4,21 +4,21 @@ namespace Src\User\Infrastructure;
 
 use Src\User\Domain\UserId;
 use Src\User\Domain\UserModel;
-use Src\User\Domain\Email;
 use Src\User\Domain\Contracts\UserRepository;
+use Src\User\Domain\Token;
 use Src\User\Domain\UserName;
 use Src\User\Infrastructure\Eloquent\UserEloquentModel;
 
 final class EloquentUserRepository implements UserRepository
 {
 
-    public function find(UserId $userId): ?array
+    public function find(UserId $userId): ?UserModel
     {
         $model = UserEloquentModel::find($userId->getId());
         if (!$model) {
             return null;
         }
-        return $model->toArray();
+        return UserModel::fromArray($model->toArray());
     }
 
     public function register(UserModel $userModel): ?array
@@ -26,9 +26,16 @@ final class EloquentUserRepository implements UserRepository
         return UserEloquentModel::create($userModel->toArray())->toArray();
     }
 
-    public function login(UserEloquentModel $userEloquentModel): ?string
+    public function login(UserModel $user): ?UserModel
     {
-        return $userEloquentModel->addToken();
+        $eloquentModel = $this->findToAuth($user);
+
+        if (!$eloquentModel) {
+            return null;
+        }
+        $userModel = UserModel::fromArray($eloquentModel->toArray());
+        $userModel->addToken(new Token($eloquentModel->addToken()));
+        return $userModel;
     }
 
     public function logout(): void
@@ -39,12 +46,7 @@ final class EloquentUserRepository implements UserRepository
         }
     }
 
-    public function findEmail(Email $email): ?UserEloquentModel
-    {
-        return UserEloquentModel::where('email', $email->getEmail())->first();
-    }
-
-    public function findToAuth(UserModel $userModel): ?UserEloquentModel
+    private function findToAuth(UserModel $userModel): ?UserEloquentModel
     {
         return UserEloquentModel::where(
             'email',

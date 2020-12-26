@@ -15,6 +15,6 @@ class UserController extends Controller
     public function show($id)
     {
         $command = new FindUserByIdCommand($id);
-        return $this->commandBus->execute($command);
+        return $this->commandBus->execute($command)->toArray();
     }
 }
