@@ -6,6 +6,7 @@ use Src\User\Domain\UserId;
 use Src\User\Domain\UserModel;
 use Src\User\Domain\Email;
 use Src\User\Domain\Contracts\UserRepository;
+use Src\User\Domain\UserName;
 use Src\User\Infrastructure\Eloquent\UserEloquentModel;
 
 final class EloquentUserRepository implements UserRepository
@@ -52,5 +53,17 @@ final class EloquentUserRepository implements UserRepository
             'username',
             $userModel->getUserName()->getUserName()
         )->first();
+    }
+
+    public function findByUsername(UserName $userName): ?UserModel
+    {
+        $userEloquent = UserEloquentModel::where(
+            'username',
+            $userName->getUserName()
+        )->first();
+        if (!$userEloquent) {
+            return null;
+        }
+        return UserModel::fromArray($userEloquent->toArray());
     }
 }
