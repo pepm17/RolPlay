@@ -15,7 +15,7 @@ final class Tabletop
     private UserName $dungeonMaster;
     private $characterSheets;
     private $habilities;
-    private $participants;
+    private $players;
 
     public function __construct(
         TabletopId $id,
@@ -29,7 +29,7 @@ final class Tabletop
         $this->dungeonMaster = $dungeonMaster;
         $this->characterSheets = [];
         $this->habilities = [];
-        $this->participants = [];
+        $this->players = [];
     }
 
     public static function fromArray(array $data): self
@@ -50,9 +50,9 @@ final class Tabletop
     {
         $this->habilities[] = $habilities;
     }
-    public function addParticipants(UserModel $participants)
+    public function addPlayers(array $players)
     {
-        $this->participants[] = $participants;
+        $this->players = $players;
     }
 
     public function toArray()
@@ -64,7 +64,7 @@ final class Tabletop
             "dungeonMaster" => $this->dungeonMaster->getUserName(),
             "characterSheets" => $this->characterSheets,
             "habilities" => $this->habilities,
-            "participants" => $this->participants
+            "players" => $this->players
         ];
     }
 }

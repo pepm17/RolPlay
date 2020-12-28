@@ -3,7 +3,7 @@
 namespace Src\Tabletop\Infrastructure\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
-use Src\CharacterSheet\Infrastructure\Eloquent\CharacterSheetEloquentModel;
+use Src\User\Infrastructure\Eloquent\UserEloquentModel;
 
 final class TabletopEloquentModel extends Model
 {
@@ -14,4 +14,14 @@ final class TabletopEloquentModel extends Model
         'description',
         'dungeonMaster',
     ];
+
+    public function players()
+    {
+        return $this->belongsToMany(
+            UserEloquentModel::class,
+            'tabletop_user',
+            'tabletop_id',
+            'user_username'
+        );
+    }
 }

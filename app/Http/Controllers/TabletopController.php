@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Src\Hability\Application\Create\CreateHabilityCommand;
 use Src\Shared\Domain\CommandBus;
+use Src\Tabletop\Application\AddPlayer\AddPlayerCommand;
 use Src\Tabletop\Application\Create\CreateTabletopCommand;
 
 class TabletopController extends Controller
@@ -22,6 +23,15 @@ class TabletopController extends Controller
             $request['name'],
             $request['description'],
             $request['dungeonMaster']
+        );
+        return $this->commandBus->execute($command);
+    }
+
+    public function addPlayer(Request $request)
+    {
+        $command = new AddPlayerCommand(
+            $request['tabletop_id'],
+            $request['user_id']
         );
         return $this->commandBus->execute($command);
     }

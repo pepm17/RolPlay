@@ -9,4 +9,8 @@ interface TabletopRepository
 {
     public function find(TabletopId $tabletopId): ?Tabletop;
     public function create(Tabletop $tabletop): ?array;
+    public function addPlayer(
+        TabletopId $tabletopId,
+        array $usersId
+    ): void;
 }

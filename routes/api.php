@@ -25,6 +25,7 @@ Route::resource('charactersheet', CharacterSheetController::class);
 Route::post('charactersheet/addHability', [CharacterSheetController::class, 'addHability']);
 Route::resource('hability', HabilityController::class);
 Route::resource('tabletop', TabletopController::class);
+Route::post('tabletop/addPlayer', [TabletopController::class, 'addPlayer']);
 
 Route::resource('user', UserController::class)->middleware('auth:api');
 Route::post('user/register', [AuthController::class, 'register']);

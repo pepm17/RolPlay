@@ -13,12 +13,30 @@ final class EloquentTabletopRepository implements TabletopRepository
     {
         return TabletopEloquentModel::create($tabletop->toArray())->toArray();
     }
+
     public function find(TabletopId $tabletopId): ?Tabletop
     {
         $tabletopModel = TabletopEloquentModel::find($tabletopId->value());
         if (!$tabletopModel) {
             return null;
         }
-        return Tabletop::fromArray($tabletopModel->toArray());
+        $tableTopEntity = Tabletop::fromArray($tabletopModel->toArray());
+
+        $users = [];
+        foreach ($tabletopModel->players as $tableUser) {
+            $users[] = $tableUser->toArray()['username'];
+        }
+        $tableTopEntity->addPlayers($users);
+
+        return $tableTopEntity;
+    }
+
+    public function addPlayer(
+        TabletopId $tabletopId,
+        array $usersId
+    ): void {
+
+        $tabletopModel = TabletopEloquentModel::find($tabletopId->value());
+        $tabletopModel->players()->attach($usersId);
     }
 }
