@@ -16,15 +16,15 @@ class CreateTabletopUserTable extends Migration
         Schema::create('tabletop_user', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('tabletop_id');
-            $table->unsignedBigInteger('user_id');
+            $table->string('user_username');
             $table->timestamps();
 
             $table->foreign('tabletop_id')
                 ->references('id')
                 ->on('tabletop')
                 ->onDelete('cascade');
-            $table->foreign('user_id')
-                ->references('id')
+            $table->foreign('user_username')
+                ->references('username')
                 ->on('users')
                 ->onDelete('cascade');
         });
