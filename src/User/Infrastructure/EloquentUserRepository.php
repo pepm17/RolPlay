@@ -23,6 +23,10 @@ final class EloquentUserRepository implements UserRepository
 
     public function register(UserModel $userModel): ?array
     {
+        $eloquentModel = $this->findToAuth($userModel);
+        if ($eloquentModel) {
+            return null;
+        }
         return UserEloquentModel::create($userModel->toArray())->toArray();
     }
 

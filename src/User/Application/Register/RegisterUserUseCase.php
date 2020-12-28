@@ -18,16 +18,14 @@ final class RegisterUserUseCase
 
     public function __invoke(array $data)
     {
-        $userExist = $this->userRepository->findToAuth(UserModel::fromArray($data));
-        if ($userExist) {
-            throw new UserAlreadyExist("User already Exist");
-        }
-
         $userModel = UserModel::fromArray($data);
         $userModel->validateEmail();
         $userModel->passwordEqual(new Password($data['confirmPassword']));
 
         $user = $this->userRepository->register($userModel);
+        if (!$user) {
+            throw new UserAlreadyExist("User already Exist");
+        }
 
         return UserModel::fromArray($user)->toArray();
     }
