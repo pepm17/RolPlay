@@ -2,11 +2,13 @@
 
 namespace Src\CharacterSheet\Application\AddHability;
 
+use Src\CharacterSheet\Application\Find\FindCharacterSheetCommand;
 use Src\CharacterSheet\Domain\CharacterSheet;
 use Src\CharacterSheet\Domain\CharacterSheetHability;
 use Src\CharacterSheet\Domain\CharacterSheetId;
 use Src\CharacterSheet\Domain\Contracts\CharacterSheetRepository;
 use Src\CharacterSheet\Domain\Exception\CharacterSheetNotExist;
+use Src\CharacterSheet\Domain\Exception\InvalidArguments;
 use Src\Hability\Application\Find\FindHabilityCommand;
 use Src\Hability\Domain\Hability;
 use Src\Shared\Domain\CommandBus;
@@ -27,39 +29,45 @@ final class AddHabilityUseCase
 
     public function __invoke(array $array)
     {
-        $habilities = $this->convertArrayToHabilityArray($array);
-
-        $characterSheetEntity = $this->characterSheetRepository->addHability(
-            new CharacterSheetId($array["idCharacterSheet"]),
-            $array
-        );
-        if (!$characterSheetEntity) {
-            throw new CharacterSheetNotExist("Character sheet not exist");
-        }
+        $characterSheetEntity = $this->find($array["idCharacterSheet"]);
+        $habilities = $this->habilitiesInArray($array['idHability'], $array['points']);
 
         $characterSheetEntity->addHability(
             new CharacterSheetHability($habilities)
         );
+
+        $this->characterSheetRepository->addHability(
+            new CharacterSheetId($array["idCharacterSheet"]),
+            $array['idHability'],
+            $array['points']
+        );
+
         return $characterSheetEntity->toArray();
     }
 
-    private function convertArrayToHabilityArray(array $array): array
+    private function habilitiesInArray(array $idHability, array $points): array
     {
-        $habilities = [];
-        for ($i = 0; $i < count($array['idHability']); $i++) {
-            $habilityEntity = $this->verifyHability($array["idHability"][$i]);
-            $dice = new Dice($array['points'][$i]);
-            $habilities[$habilityEntity->getName()->value()] = $dice->getResultDice();
+        if (count($idHability) !== count($points)) {
+            throw new InvalidArguments("All habilities must have points");
         }
+
+        $habilities = [];
+
+        for ($i = 0; $i < count($idHability); $i++) {
+            $hability = $this->commandBus->execute(
+                new FindHabilityCommand($idHability[$i])
+            );
+            $dice = new Dice($points[$i]);
+            $habilities[$hability->getName()->value()] = $dice->getResultDice();
+        }
+
         return $habilities;
     }
 
-    private function verifyHability(string $idHability): Hability
+    private function find(string $id): CharacterSheet
     {
-        $commandFindHability = new FindHabilityCommand(
-            $idHability
+        return $this->commandBus->execute(
+            new FindCharacterSheetCommand($id)
         );
-        $habilityEntity = $this->commandBus->execute($commandFindHability);
-        return $habilityEntity;
     }
 }
