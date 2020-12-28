@@ -11,6 +11,7 @@ interface CharacterSheetRepository
     public function find(CharacterSheetId $charachetSheetId): ?CharacterSheet;
     public function addHability(
         CharacterSheetId $model,
-        array $array
-    ): ?CharacterSheet;
+        array $idHability,
+        array $points
+    ): void;
 }

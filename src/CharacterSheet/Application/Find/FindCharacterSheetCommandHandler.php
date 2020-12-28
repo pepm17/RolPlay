@@ -16,6 +16,6 @@ final class FindCharacterSheetCommandHandler
     public function handle(FindCharacterSheetCommand $command)
     {
         $characterSheetId = new CharacterSheetId($command->getId());
-        $this->find->__invoke($characterSheetId);
+        return $this->find->__invoke($characterSheetId);
     }
 }

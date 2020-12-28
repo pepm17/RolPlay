@@ -21,23 +21,11 @@ final class FindCharacterSheetUseCase
 
     public function __invoke(CharacterSheetId $id): CharacterSheet
     {
-        $characterSheetModel = $this->characterSheetRepository->find($id);
-        if (!$characterSheetModel) {
+        $characterSheetEntity = $this->characterSheetRepository->find($id);
+        if (!$characterSheetEntity) {
             throw new CharacterSheetNotExist("Character Sheet Not Found");
         }
 
-        $characterSheetEntity = CharacterSheet::fromArray($characterSheetModel->toArray());
-
-        $habilities = [];
-        foreach ($characterSheetModel->habilities as $habilityModel) {
-            $hability = Hability::fromArray($habilityModel->toArray());
-            $dice = new Dice($habilityModel->pivot->points);
-            $habilities[$hability->getName()->value()] = $dice->getResultDice();
-        }
-
-        $characterSheetEntity->addHability(
-            new CharacterSheetHability($habilities)
-        );
         return $characterSheetEntity;
     }
 }

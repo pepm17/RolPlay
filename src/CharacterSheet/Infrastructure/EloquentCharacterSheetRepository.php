@@ -3,6 +3,7 @@
 namespace Src\CharacterSheet\Infrastructure;
 
 use Src\CharacterSheet\Domain\CharacterSheet;
+use Src\CharacterSheet\Domain\CharacterSheetHability;
 use Src\CharacterSheet\Domain\CharacterSheetId;
 use Src\CharacterSheet\Domain\Contracts\CharacterSheetRepository;
 use Src\CharacterSheet\Infrastructure\Eloquent\CharacterSheetEloquentModel;
@@ -22,26 +23,35 @@ final class EloquentCharacterSheetRepository implements CharacterSheetRepository
         if (!$characterSheetEloquentModel) {
             return null;
         }
-        return CharacterSheet::fromArray($characterSheetEloquentModel->toArray());
+
+
+        $characterSheetEntity = CharacterSheet::fromArray($characterSheetEloquentModel->toArray());
+
+        $habilities = [];
+        foreach ($characterSheetEloquentModel->habilities as $hability) {
+            $habilities[$hability->toArray()['name']] = $hability->toArray()->pivot['points'];
+            dd($hability);
+        }
+        $characterSheetEntity->addHability(
+            new CharacterSheetHability($habilities)
+        );
+
+        return $characterSheetEntity;
     }
 
     public function addHability(
         CharacterSheetId $charachetSheetId,
-        array $array
-    ): ?CharacterSheet {
+        array $idHability,
+        array $points
+    ): void {
         $characterSheetEloquentModel = CharacterSheetEloquentModel::find(
             $charachetSheetId->value()
         );
-        if (!$characterSheetEloquentModel) {
-            return null;
-        }
 
-        $sync_data = [];
-        for ($i = 0; $i < count($array['idHability']); $i++) {
-            $sync_data[$array['idHability'][$i]] = ['points' => $array['points'][$i]];
+        $attach_data = [];
+        for ($i = 0; $i < count($idHability); $i++) {
+            $attach_data[$idHability[$i]] = ['points' => $points[$i]];
         }
-        $characterSheetEloquentModel->habilities()->sync($sync_data);
-
-        return CharacterSheet::fromArray($characterSheetEloquentModel->toArray());
+        $characterSheetEloquentModel->habilities()->attach($attach_data);
     }
 }

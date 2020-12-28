@@ -53,6 +53,11 @@ final class CharacterSheet
         $this->habilities = $hability;
     }
 
+    public function getHabilities(): CharacterSheetHability
+    {
+        return $this->habilities;
+    }
+
     public function toArray(): array
     {
         return [
