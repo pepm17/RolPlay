@@ -12,13 +12,13 @@ services:
       - rolplay_db
 
   rolplay_db:
-    image: mysql:5.7.22
+    image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: rolplay
       MYSQL_USER: root
       MYSQL_PASSWORD: root
     volumes:
-      - ./storage/DB:/var/lib/mysql
+      - ./storage/DBMySQL:/var/lib/mysql
     ports:
       - 33060:3306
